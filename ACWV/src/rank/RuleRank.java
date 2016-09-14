@@ -28,5 +28,10 @@ import java.util.List;
 */
 
 public interface RuleRank {
-     public List rank(List ruleList);
+     /**
+      * 該接口可以對規則進行排序
+     * @param ruleList
+     * @return
+     */
+    public List rank(List ruleList);
 }
