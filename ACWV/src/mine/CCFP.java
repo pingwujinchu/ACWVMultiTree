@@ -61,7 +61,7 @@ public class CCFP implements Serializable{
 	public Tree[] buildTree(FastVector []headertable) throws Exception{
 		Tree []t = new Tree[numClass];
 		for(int i = 0 ; i < numClass ; i++){
-			t[i] = new Tree(1);
+			t[i] = new Tree(1, classSup, numInstances, numAttr,i);
 		}
 		t[0].treebuild(instances, onlyClass, headertable,t);
 		return t;
