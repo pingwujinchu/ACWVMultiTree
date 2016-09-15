@@ -182,10 +182,11 @@ public class Tree implements Serializable{
 	public void genAllRules(TreeNode tn,List ruleList,int type){
 		LinkedList<TreeNode> child = tn.child;
 		if(child.isEmpty()){
-			Map rule = new HashMap();
-			List l = new ArrayList(ruleList);
-			rule.put(l, type);
-			allRuleList.add(rule);
+//			Map rule = new HashMap();
+//			List l = new ArrayList(ruleList);
+//			rule.put(l, type);
+//			allRuleList.add(rule);
+//			double principality = calculatePrincipality(child, type,0.5);
 		}else{
 			for(int i = 0 ; i < child.size() ; i++){
 				ruleList.add(child.get(i));
