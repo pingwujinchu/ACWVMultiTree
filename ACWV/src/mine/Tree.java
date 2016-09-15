@@ -19,17 +19,37 @@ public class Tree implements Serializable{
 	 */
 	private static final long serialVersionUID = 256354584445345069L;
 	TreeNode root;
-	int numClass;
 	List allRuleList;
+	List principalityList;
+	int numAttr, numClass, numInstances;
+	double []classSup;
+	int classId;
 
 	public Tree(int numClass) {
 		allRuleList = new ArrayList();
+		principalityList = new ArrayList();
 		this.numClass = numClass;
 		root = new TreeNode(-1,-1, numClass);
 		root.classcount = new int[numClass];
 		for(int i=0;i<numClass;i++){
 			root.classcount[i] = 0;
 		}
+
+	}
+	
+	public Tree(int numClass,double []classSup,int numInstance,int numAttr,int classId) {
+		allRuleList = new ArrayList();
+		principalityList = new ArrayList();
+		this.numClass = numClass;
+		root = new TreeNode(-1,-1, numClass);
+		root.classcount = new int[numClass];
+		for(int i=0;i<numClass;i++){
+			root.classcount[i] = 0;
+		}
+		this.classSup = classSup;
+		this.numInstances = numInstance;
+		this.numAttr = numAttr;
+		this.classId = classId;
 	}
 	public int countnode() {
 		int nodecount[] = new int[1];
@@ -170,16 +190,30 @@ public class Tree implements Serializable{
 			for(int i = 0 ; i < child.size() ; i++){
 				ruleList.add(child.get(i));
 				Map rule = new HashMap();
+				double principality = calculatePrincipality(child.get(i), type,0.5);
 				List l = new ArrayList(ruleList);
 				rule.put(l, type);
 				allRuleList.add(rule);
+				principalityList.add(principality);
 				genAllRules(child.get(i),ruleList,type);
 				ruleList.remove(child.get(i));
 			}
 		}
 	}
+	
 	public List getAllRuleList() {
 		return allRuleList;
 	}
 	
+	private double calculatePrincipality(TreeNode hn,int j,double x){
+		double conf = (double) hn.classcount[0] / numInstances;
+		if(conf == 1)
+			conf = 0.999;
+		double principality = x*conf+(1-x)*hn.classcount[0]/(numInstances*classSup[j]);
+		return principality;
+	}
+
+	public List getPrincipalityList(){
+		return principalityList;
+	}
 }
