@@ -78,7 +78,7 @@ public class DBCover implements RulePrun {
 				}
 			}
 		}
-		System.out.println(resultList.size());
+//		System.out.println(resultList.size());
 		return resultList;
 	}
 
