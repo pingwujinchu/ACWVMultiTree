@@ -33,5 +33,5 @@ public interface RuleRank {
      * @param ruleList
      * @return
      */
-    public List rank(List ruleList);
+    public List rank(List ruleList,List measureList);
 }
