@@ -11,6 +11,7 @@ import java.util.Map;
 import prun.DBCover;
 import prun.RulePrun;
 import prun.X2Prun;
+import rank.RankBasedPrincipality;
 import weka.associations.LabeledItemSet;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
@@ -41,10 +42,12 @@ public class ACWV extends Classifier{
 	int attrvalue[];//store number of values each attribute can be
 	
 	List ruleList;
+	List pincipalityList;
 
 	public void buildClassifier (Instances instances)throws Exception
 	{ 
 		ruleList = new ArrayList();
+		pincipalityList = new ArrayList();
 		double upperBoundMinSupport=1;
 		buildCount++;
 		// m_instances does not contain the class attribute
@@ -65,17 +68,20 @@ public class ACWV extends Classifier{
 			
 			t = fp.buildTree(headertable);
 			
-			RulePrun rulePrun = new X2Prun(0,instances);
-//			RulePrun rulePrun = new DBCover(instances);
+//			RulePrun rulePrun = new X2Prun(0,instances);
+			RulePrun rulePrun = new DBCover(instances);
 			for(int i = 0 ; i < numClass ; i++){
 //				t[i].countnode();
 				List tem  = new ArrayList();
 				t[i].genAllRules(t[i].root, tem,i);
 				List allRuleList = t[i].getAllRuleList();
 				ruleList.addAll(allRuleList);
-				
+				List pincipality = t[i].getPrincipalityList();
+				pincipalityList.addAll(pincipality);
 //				t[i].countnode();
 			}
+			RankBasedPrincipality rp = new RankBasedPrincipality();
+			ruleList = rp.rank(ruleList, pincipalityList);
 			ruleList = rulePrun.prun(ruleList);
 			
 		}
@@ -115,7 +121,7 @@ public class ACWV extends Classifier{
 		    		}
 		    	}
 		    	if(isAllMatch){
-		    		result[((int)rule.get(curr))]++;
+		    		result[((int)rule.get(curr))]+=calWeight((double)pincipalityList.get(i), curr.size(), numAttr);
 		    		len[((int)rule.get(curr))]+=curr.size();
 		    	}
 		    }
@@ -133,6 +139,16 @@ public class ACWV extends Classifier{
 			}
 		}
 		return result;
+	}
+	
+	private double calWeight(double conv, int rulelen, int size) {
+		double weight = 0;
+		double d = size - rulelen;
+		if (d == 0)
+			d = 0.01;
+		// weight = conv /d;
+		weight = conv * rulelen;
+		return weight;
 	}
 	
 	private int findMax(double[] d)
