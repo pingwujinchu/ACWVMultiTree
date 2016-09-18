@@ -179,7 +179,7 @@ public class Tree implements Serializable{
 		return true;
 	}
 	
-	public void genAllRules(TreeNode tn,List ruleList,int type){
+	public void genAllRules(TreeNode tn,List ruleList,int type,double minPrincipality){
 		LinkedList<TreeNode> child = tn.child;
 		if(child.isEmpty()){
 //			Map rule = new HashMap();
@@ -192,11 +192,15 @@ public class Tree implements Serializable{
 				ruleList.add(child.get(i));
 				Map rule = new HashMap();
 				double principality = calculatePrincipality(child.get(i), type,0.5);
+				if(principality<minPrincipality){
+					ruleList.remove(child.get(i));
+					continue;
+				}
 				List l = new ArrayList(ruleList);
 				rule.put(l, type);
 				allRuleList.add(rule);
 				principalityList.add(principality);
-				genAllRules(child.get(i),ruleList,type);
+				genAllRules(child.get(i),ruleList,type,minPrincipality);
 				ruleList.remove(child.get(i));
 			}
 		}

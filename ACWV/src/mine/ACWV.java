@@ -44,6 +44,8 @@ public class ACWV extends Classifier{
 	List ruleList;
 	List pincipalityList;
 
+	private double minPrincipality = 0; 
+    
 	public void buildClassifier (Instances instances)throws Exception
 	{ 
 		ruleList = new ArrayList();
@@ -73,7 +75,7 @@ public class ACWV extends Classifier{
 			for(int i = 0 ; i < numClass ; i++){
 //				t[i].countnode();
 				List tem  = new ArrayList();
-				t[i].genAllRules(t[i].root, tem,i);
+				t[i].genAllRules(t[i].root, tem,i,minPrincipality);
 				List allRuleList = t[i].getAllRuleList();
 				ruleList.addAll(allRuleList);
 				List pincipality = t[i].getPrincipalityList();
@@ -172,8 +174,8 @@ public class ACWV extends Classifier{
 	}
 	
 	public static void runClassifier(){
-//		File folder = new File("data");
-		File folder = new File("unbalance");
+		File folder = new File("data");
+//		File folder = new File("unbalance");
 		File[]files = folder.listFiles();
 		for(File f:files){
 			Calendar c1 = Calendar.getInstance();
