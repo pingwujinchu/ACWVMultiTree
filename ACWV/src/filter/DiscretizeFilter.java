@@ -34,26 +34,27 @@ import weka.filters.supervised.attribute.Discretize;
 */
 
 public class DiscretizeFilter {
-     public static void mian(String []args) throws Exception{
+     public static void main(String []args) {
     	 File folder = new File("keel_unbalance");
     	 File[]files = folder.listFiles();
     	 Discretize discretize = new Discretize(); 
     	 String[] options = null;
     	 for(File f:files){
+    		 try{
     		 Instances instances = DataSource.read(f.getPath()); 
+    		 instances.setClassIndex(instances.numAttributes()-1);
     		 System.out.println(instances.toSummaryString());
-    		 options = new String[6]; 
-    		 options[0] = "-B"; 
-    		 options[1] = "8"; 
-    		 options[2] = "-M"; 
-    		 options[3] = "-1.0"; 
-    		 options[4] = "-R"; 
-    		 options[5] = "2-last"; 
+    		 options = new String[2]; 
+    		 options[0] = "-R"; 
+    		 options[1] = "2-last"; 
     		 discretize.setOptions(options);
     		 discretize.setInputFormat(instances); 
     		 Instances newInstances2 = Filter.useFilter(instances, discretize); 
     		 System.err.println(newInstances2.toSummaryString()); 
-    		 DataSink.write("keel/"+f.getName(), newInstances2); 
+    		 DataSink.write("keel/"+f.getName(), newInstances2);
+    		 }catch(Exception e){
+    			 e.printStackTrace();
+    		 }
     	 }
      }
 }

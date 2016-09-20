@@ -174,7 +174,8 @@ public class ACWV extends Classifier{
 	
 	public static void runClassifier(){
 //		File folder = new File("data");
-		File folder = new File("unbalance");
+//		File folder = new File("unbalance");
+		File folder = new File("keel");
 		File[]files = folder.listFiles();
 		for(File f:files){
 			Calendar c1 = Calendar.getInstance();
