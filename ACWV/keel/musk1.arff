@@ -1,4 +1,4 @@
-@relation musk1-weka.filters.supervised.attribute.Discretize-R2-last
+@relation musk1-weka.filters.supervised.attribute.Discretize-Rfirst-last
 
 @attribute Molecule_name string
 @attribute F1 {'\'All\''}

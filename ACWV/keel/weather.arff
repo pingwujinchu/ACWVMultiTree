@@ -1,4 +1,4 @@
-@relation weather-weka.filters.supervised.attribute.Discretize-R2-last
+@relation weather-weka.filters.supervised.attribute.Discretize-Rfirst-last
 
 @attribute outlook {sunny,overcast,rainy}
 @attribute temperature {hot,mild,cool}

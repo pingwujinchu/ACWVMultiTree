@@ -1,4 +1,4 @@
-@relation abalone9-18-weka.filters.supervised.attribute.Discretize-R2-last
+@relation abalone9-18-weka.filters.supervised.attribute.Discretize-Rfirst-last
 
 @attribute Sex {M,F,I}
 @attribute Length {'\'All\''}

@@ -44,8 +44,13 @@ public class ACWV extends Classifier{
 	List ruleList;
 	List pincipalityList;
 
-	private double minPrincipality = 0.2; 
+	private double minPrincipality = 0.01; 
     
+	
+	static {
+        Log4jPrintStream.redirectSystemOut();
+    }
+
 	public void buildClassifier (Instances instances)throws Exception
 	{ 
 		ruleList = new ArrayList();
@@ -70,8 +75,8 @@ public class ACWV extends Classifier{
 			
 			t = fp.buildTree(headertable);
 			
-//			RulePrun rulePrun = new X2Prun(0.5,instances);
-			RulePrun rulePrun = new DBCover(instances);
+//			RulePrun rulePrun = new X2Prun(0.1,instances);
+//			RulePrun rulePrun = new DBCover(instances);
 			for(int i = 0 ; i < numClass ; i++){
 //				t[i].countnode();
 				List tem  = new ArrayList();
@@ -80,11 +85,12 @@ public class ACWV extends Classifier{
 				ruleList.addAll(allRuleList);
 				List pincipality = t[i].getPrincipalityList();
 				pincipalityList.addAll(pincipality);
+				System.out.println("第"+i+"类生成的规则数："+allRuleList.size());
 //				t[i].countnode();
 			}
-			RankBasedPrincipality rp = new RankBasedPrincipality();
-			ruleList = rp.rank(ruleList, pincipalityList);
-			ruleList = rulePrun.prun(ruleList);
+//			RankBasedPrincipality rp = new RankBasedPrincipality();
+//			ruleList = rp.rank(ruleList, pincipalityList);
+//			ruleList = rulePrun.prun(ruleList);
 		}
 	}
 

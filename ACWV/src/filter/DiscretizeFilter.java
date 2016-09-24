@@ -7,6 +7,7 @@ import weka.core.converters.ConverterUtils.DataSink;
 import weka.core.converters.ConverterUtils.DataSource;
 import weka.filters.Filter;
 import weka.filters.supervised.attribute.Discretize;
+import weka.filters.unsupervised.attribute.NumericToNominal;
 
 /**
  * 
@@ -38,6 +39,7 @@ public class DiscretizeFilter {
     	 File folder = new File("keel_unbalance");
     	 File[]files = folder.listFiles();
     	 Discretize discretize = new Discretize(); 
+    	 NumericToNominal nn = new NumericToNominal();
     	 String[] options = null;
     	 for(File f:files){
     		 try{
@@ -46,10 +48,11 @@ public class DiscretizeFilter {
     		 System.out.println(instances.toSummaryString());
     		 options = new String[2]; 
     		 options[0] = "-R"; 
-    		 options[1] = "2-last"; 
+    		 options[1] = "first-last"; 
     		 discretize.setOptions(options);
     		 discretize.setInputFormat(instances); 
     		 Instances newInstances2 = Filter.useFilter(instances, discretize); 
+    		 
     		 System.err.println(newInstances2.toSummaryString()); 
     		 DataSink.write("keel/"+f.getName(), newInstances2);
     		 }catch(Exception e){
